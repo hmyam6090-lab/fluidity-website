@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import {
+  codeSamples,
+  codeSamplesBlurb,
   demoBlurb,
   descriptionCopy,
   facts,
@@ -24,6 +26,7 @@ const navLinks = [
   { href: "#description", label: "Description" },
   { href: "#images", label: "Images" },
   { href: "#music", label: "Music" },
+  { href: "#code-samples", label: "Code" },
   { href: "#team", label: "Our Team" },
 ];
 
@@ -123,8 +126,28 @@ function TeamCard({ member, index }) {
   );
 }
 
+function CodeSampleCard({ sample, isActive, onSelect }) {
+  return (
+    <button
+      className={`code-sample-card${isActive ? " is-active" : ""}`}
+      type="button"
+      aria-pressed={isActive}
+      onClick={() => onSelect(sample.id)}
+    >
+      <span className="code-sample-card__category">{sample.category}</span>
+      <strong className="code-sample-card__title">{sample.title}</strong>
+      <span className="code-sample-card__summary">{sample.summary}</span>
+      <span className="code-sample-card__meta">
+        <span>{sample.fileName}</span>
+        <span>{sample.lineCount} lines</span>
+      </span>
+    </button>
+  );
+}
+
 function App() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [activeCodeSampleId, setActiveCodeSampleId] = useState(codeSamples[0]?.id ?? "");
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -208,6 +231,9 @@ function App() {
   const mistStyle = {
     transform: `translate3d(0, ${scrollY * 0.12}px, 0)`,
   };
+
+  const activeCodeSample =
+    codeSamples.find((sample) => sample.id === activeCodeSampleId) ?? codeSamples[0];
 
   return (
     <div className="site-shell">
@@ -556,6 +582,82 @@ function App() {
                   allow="autoplay"
                 />
               </article>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="code-samples"
+          className="section"
+          style={{ "--section-background": `url(${sectionBackgrounds.codeSamples})` }}
+        >
+          <div className="section__overlay section__overlay--forest" />
+          <SectionSeparator src={sectionSeparators.codeSamples} className="section-separator--code" />
+          <img className="decor decor--dark-clouds" src={heroAssets.darkClouds} alt="" aria-hidden="true" />
+
+          <div className="section__content">
+            <SectionHeading
+              eyebrow="Programming"
+              title="Code Samples"
+              intro={codeSamplesBlurb}
+              delay={50}
+            />
+
+            <div className="code-samples-layout">
+              {activeCodeSample ? (
+                <article
+                  className="panel code-preview"
+                  data-reveal
+                  style={{ "--reveal-delay": "120ms" }}
+                >
+                  <div className="code-preview__header">
+                    <div>
+                      <p className="eyebrow">{activeCodeSample.category}</p>
+                      <h3>{activeCodeSample.title}</h3>
+                      <p>{activeCodeSample.summary}</p>
+                    </div>
+                    <a
+                      className="button button--primary"
+                      href={activeCodeSample.downloadHref}
+                      download={activeCodeSample.fileName}
+                    >
+                      Download Snippet
+                    </a>
+                  </div>
+
+                  <div className="code-preview__meta" aria-label="Selected code sample details">
+                    <span>{activeCodeSample.fileName}</span>
+                    <span>GDScript</span>
+                    <span>{activeCodeSample.lineCount} lines</span>
+                  </div>
+
+                  <pre className="code-preview__snippet">
+                    <code>{activeCodeSample.preview}</code>
+                  </pre>
+                </article>
+              ) : null}
+
+              <aside
+                className="panel code-sample-list"
+                data-reveal
+                style={{ "--reveal-delay": "190ms" }}
+              >
+                <div className="code-sample-list__header">
+                  <p className="eyebrow">Core Scripts</p>
+                  <h3>Preview a system, then download the file.</h3>
+                </div>
+
+                <div className="code-sample-list__grid">
+                  {codeSamples.map((sample) => (
+                    <CodeSampleCard
+                      key={sample.id}
+                      sample={sample}
+                      isActive={sample.id === activeCodeSample?.id}
+                      onSelect={setActiveCodeSampleId}
+                    />
+                  ))}
+                </div>
+              </aside>
             </div>
           </div>
         </section>

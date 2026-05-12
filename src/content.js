@@ -8,10 +8,31 @@ const assetModules = import.meta.glob("../Assets/**/*.{png,jpg,jpeg}", {
   import: "default",
 });
 
+const codeSampleSourceModules = import.meta.glob("../Content/Code_Samples/*.gd", {
+  eager: true,
+  query: "?raw",
+  import: "default",
+});
+
+const codeSampleUrlModules = import.meta.glob("../Content/Code_Samples/*.gd", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
 const imageMap = {
   ...contentModules,
   ...assetModules,
 };
+
+const codeSampleMap = Object.keys(codeSampleSourceModules).reduce((samples, path) => {
+  samples[path] = {
+    source: codeSampleSourceModules[path],
+    url: codeSampleUrlModules[path],
+  };
+
+  return samples;
+}, {});
 
 const resolveImage = (path) => {
   const image = imageMap[path];
@@ -21,6 +42,35 @@ const resolveImage = (path) => {
   }
 
   return image;
+};
+
+const resolveCodeSample = (path) => {
+  const sample = codeSampleMap[path];
+
+  if (!sample?.source || !sample?.url) {
+    throw new Error(`Missing code sample asset: ${path}`);
+  }
+
+  return sample;
+};
+
+const makeCodeSample = ({ file, category, title, summary, previewLines = 18 }) => {
+  const path = `../Content/Code_Samples/${file}`;
+  const { source, url } = resolveCodeSample(path);
+  const trimmedSource = source.trimEnd();
+  const lines = trimmedSource.split("\n");
+  const preview = lines.slice(0, previewLines).join("\n");
+
+  return {
+    id: file.replace(/\.gd$/, ""),
+    fileName: file,
+    category,
+    title,
+    summary,
+    lineCount: lines.length,
+    preview: lines.length > previewLines ? `${preview}\n# ...` : preview,
+    downloadHref: url,
+  };
 };
 
 const trailerId = "1vXb2p8K5vIGGc6T56JIuZBQ05UirI-Ik";
@@ -68,6 +118,7 @@ export const sectionBackgrounds = {
   description: resolveImage("../Assets/Art/Background/forest_background.png"),
   images: resolveImage("../Assets/Art/Background/clouds_background.png"),
   music: resolveImage("../Assets/Art/Background/ice_cave_bg.png"),
+  codeSamples: resolveImage("../Assets/Art/Background/forest_background.png"),
   team: resolveImage("../Assets/Art/Background/main_menu_bg.png"),
 };
 
@@ -83,6 +134,9 @@ export const sectionSeparators = {
     "../Assets/Art/Decor & Foreground/clouds_foreground_variation_bottom.png",
   ),
   music: resolveImage("../Assets/Art/Decor & Foreground/dark_grass_foreground.png"),
+  codeSamples: resolveImage(
+    "../Assets/Art/Decor & Foreground/light_bush_foreground.png",
+  ),
   team: resolveImage("../Assets/Art/Decor & Foreground/dark_bush_foreground.png"),
 };
 
@@ -226,6 +280,68 @@ export const galleryGroups = [
 
 export const soundtrackBlurb =
   "4 Full Pieces of Music support Fluidity's natural journey across ice, water, and water vapor. The full set is available on SoundCloud.";
+
+export const codeSamplesBlurb =
+  "A compact look at the core GDScript systems behind Fluidity. Pick a script to preview the real source and download the snippet for closer inspection.";
+
+export const codeSamples = [
+  makeCodeSample({
+    file: "player_state.gd",
+    category: "State Controller",
+    title: "Player State",
+    summary:
+      "The central temperature and form-switching controller that manages transitions, death handling, and room-driven behavior.",
+    previewLines: 24,
+  }),
+  makeCodeSample({
+    file: "water_softbody.gd",
+    category: "Movement System",
+    title: "Water Softbody",
+    summary:
+      "The water-form controller focuses on softbody movement, shared zone checks, and the feel of flow through the level.",
+    previewLines: 22,
+  }),
+  makeCodeSample({
+    file: "vapor_softbody.gd",
+    category: "Movement System",
+    title: "Vapor Softbody",
+    summary:
+      "The vapor form trades ground movement for lift, steering, and lightweight trail feedback built for the final phase of the cycle.",
+    previewLines: 20,
+  }),
+  makeCodeSample({
+    file: "ice.gd",
+    category: "Movement System",
+    title: "Ice Controller",
+    summary:
+      "The ice-form controller handles grounded platforming, jump forgiveness, and shatter-pressure feedback in colder spaces.",
+    previewLines: 20,
+  }),
+  makeCodeSample({
+    file: "room_state.gd",
+    category: "Level Runtime",
+    title: "Room State",
+    summary:
+      "Each level registers room bounds, base temperatures, and music context changes so scenes stay data-driven instead of bespoke.",
+    previewLines: 20,
+  }),
+  makeCodeSample({
+    file: "music_manager.gd",
+    category: "Audio System",
+    title: "Music Manager",
+    summary:
+      "A dual-player crossfade manager that swaps tracks, preserves sync groups, and chains contexts across the soundtrack.",
+    previewLines: 22,
+  }),
+  makeCodeSample({
+    file: "sfx_manager.gd",
+    category: "Audio System",
+    title: "SFX Manager",
+    summary:
+      "A centralized one-shot sound layer with cooldowns and automatic UI wiring so sound effects stay consistent across the build.",
+    previewLines: 22,
+  }),
+];
 
 export const teamMembers = [
   {
