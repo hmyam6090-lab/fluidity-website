@@ -77,7 +77,7 @@ const trailerId = "1vXb2p8K5vIGGc6T56JIuZBQ05UirI-Ik";
 const soundCloudUrl = "https://soundcloud.com/noak-a/sets/fluidity";
 
 export const links = {
-  demo: "https://water-works.itch.io/fluidity",
+  demo: "https://hmyam6090-lab.itch.io/fluidity",
   trailerView: `https://drive.google.com/file/d/${trailerId}/view?t=13.040745`,
   trailerVideo: `${import.meta.env.BASE_URL}fluidity-trailer.mp4`,
   soundCloud: soundCloudUrl,

@@ -1,0 +1,15 @@
+Description
+
+Fluidity is a movement-based 2D Platformer about the water cycle wherein players control a blob of H20 that will change state according to temperature change. Players are taken on a breathtaking natural journey, moving fluidly between ice, water, and water vapor depending on the temperature of their environment in order to overcome engaging platforming challenges. All the while, they are learning about the ways in which different states of matter come to be and the different ways in which that plays into the larger water cycle.
+
+Features
+
+4 Full Levels (Ice Cave, Snow, Runoff, Clouds)
+
+4 Full Pieces of Music
+
+Beautiful array of art evoking the majesty of the natural world
+
+Core mechanic is the ability to change between the states of matter in order to overcome different platforming challenges
+
+A litany of level-specific mechanics such as plants which absorb water but allow ice to move across them
