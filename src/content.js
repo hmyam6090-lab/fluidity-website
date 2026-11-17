@@ -73,13 +73,13 @@ const makeCodeSample = ({ file, category, title, summary, previewLines = 18 }) =
   };
 };
 
-const trailerId = "1vXb2p8K5vIGGc6T56JIuZBQ05UirI-Ik";
+const trailerId = "vgPaHUHjU-Q";
 const soundCloudUrl = "https://soundcloud.com/noak-a/sets/fluidity";
 
 export const links = {
   demo: "https://hmyam6090-lab.itch.io/fluidity",
-  trailerView: `https://drive.google.com/file/d/${trailerId}/view?t=13.040745`,
-  trailerVideo: `${import.meta.env.BASE_URL}fluidity-trailer.mp4`,
+  trailerView: `https://www.youtube.com/watch?v=${trailerId}`,
+  trailerEmbed: `https://www.youtube.com/embed/${trailerId}?autoplay=1&mute=1&rel=0&playsinline=1`,
   soundCloud: soundCloudUrl,
   soundCloudEmbed: `https://w.soundcloud.com/player/?url=${encodeURIComponent(soundCloudUrl)}&color=%23126da6&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true&visual=true`,
   contact: "mailto:nkofmanadsit@gmail.com",

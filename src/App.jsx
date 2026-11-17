@@ -320,15 +320,12 @@ function App() {
                 style={{ "--reveal-delay": "140ms" }}
               >
                 <div className="media-panel__frame">
-                  <video
-                    className="media-panel__video"
-                    src={links.trailerVideo}
+                  <iframe
+                    src={links.trailerEmbed}
                     title="Fluidity trailer"
-                    autoPlay
-                    muted
-                    playsInline
-                    controls
-                    preload="metadata"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
                   />
                 </div>
                 <div className="media-panel__body">
